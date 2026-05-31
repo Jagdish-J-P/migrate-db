@@ -220,11 +220,25 @@ class Migrate extends Command
 
     protected function disableForeign(): void
     {
+        $connection = $this->connection($this->target());
+
+        if($connection->getDriverName() === 'pgsql') {
+            $connection->statement("SET session_replication_role = 'replica';");
+            return;
+        }
+
         $this->target->disableForeign();
     }
 
     protected function enableForeign(): void
     {
+        $connection = $this->connection($this->target());
+
+        if($connection->getDriverName() === 'pgsql') {
+            $connection->statement("SET session_replication_role = 'origin';");
+            return;
+        }
+
         $this->target->enableForeign();
     }
 
