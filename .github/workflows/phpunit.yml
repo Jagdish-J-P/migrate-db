@@ -1,0 +1,127 @@
+name: phpunit
+
+on: [ push ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: true
+            matrix:
+                php: [ "8.0", "8.1", "8.2", "8.3", "8.4", "8.5" ]
+                laravel: [ "8.0", "9.0", "10.0", "11.0", "12.0", "13.0" ]
+                psql: [ "9", "10", "11", "12", "13", "14", "15", "16", "17", "18" ]
+                exclude:
+                    - laravel: "8.0"
+                      php: "8.3"
+                      
+                    - laravel: "8.0"
+                      php: "8.4"
+                      
+                    - laravel: "8.0"
+                      php: "8.5"
+                      
+                    - laravel: "9.0"
+                      php: "8.3"
+                      
+                    - laravel: "9.0"
+                      php: "8.4"
+                      
+                    - laravel: "9.0"
+                      php: "8.5"
+                      
+                    - laravel: "10.0"
+                      php: "8.0"
+                      
+                    - laravel: "10.0"
+                      php: "8.5"
+                      
+                    - laravel: "11.0"
+                      php: "8.0"
+                      
+                    - laravel: "11.0"
+                      php: "8.1"
+                      
+                    - laravel: "11.0"
+                      psql: "9"
+                      
+                    - laravel: "11.0"
+                      psql: "10"
+                      
+                    - laravel: "11.0"
+                      psql: "11"
+                      
+                    - laravel: "12.0"
+                      php: "8.0"
+                      
+                    - laravel: "12.0"
+                      php: "8.1"
+                      
+                    - laravel: "12.0"
+                      psql: "9"
+                      
+                    - laravel: "12.0"
+                      psql: "10"
+                      
+                    - laravel: "12.0"
+                      psql: "11"
+                      
+                    - laravel: "13.0"
+                      psql: "9"
+                      
+                    - laravel: "13.0"
+                      psql: "10"
+                      
+                    - laravel: "13.0"
+                      psql: "11"
+                      
+                    - laravel: "13.0"
+                      php: "8.0"
+                      
+                    - laravel: "13.0"
+                      php: "8.1"
+                      
+                    - laravel: "13.0"
+                      php: "8.2"
+
+        name: php ${{ matrix.php }}, lr ${{ matrix.laravel }}, pg ${{ matrix.psql }}
+
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: default
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+            postgres:
+                image: postgres:${{ matrix.psql }}-alpine
+                ports:
+                    - 5432:5432
+                env:
+                    POSTGRES_DB: default
+                    POSTGRES_USER: root
+                    POSTGRES_PASSWORD: root
+
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v6
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, redis, pdo_mysql, pdo_pgsql
+                    coverage: xdebug
+
+            -   name: Install dependencies
+                run: composer require --no-security-blocking --dev laravel/framework:^${{ matrix.laravel }}
+
+            -   name: Execute tests
+                run: sudo vendor/bin/phpunit
+                env:
+                    MYSQL_HOST: 127.0.0.1
+                    PGSQL_HOST: 127.0.0.1

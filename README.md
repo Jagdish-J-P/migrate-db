@@ -1,11 +1,12 @@
-# Migrate DB
+# Migrate DB for Laravel
 
-<img src="https://preview.dragon-code.pro/TheDragonCode/migrate-db.svg?brand=laravel" alt="Migrate DB"/>
+<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://banners.beyondco.de/Migrate%20DB.png?pattern=topography&style=style_2&fontSize=100px&md=1&showWatermark=1&theme=dark&packageManager=composer+require&packageName=dragon-code%2Fmigrate-db&description=Easy+data+transfer+from+one+database+to+another&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
+    <img src="https://banners.beyondco.de/Migrate%20DB.png?pattern=topography&style=style_2&fontSize=100px&md=1&showWatermark=1&theme=light&packageManager=composer+require&packageName=dragon-code%2Fmigrate-db&description=Easy+data+transfer+from+one+database+to+another&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" alt="Migrate DB">
+</picture>
 
 [![Stable Version][badge_stable]][link_packagist]
-[![Unstable Version][badge_unstable]][link_packagist]
 [![Total Downloads][badge_downloads]][link_packagist]
-[![Github Workflow Status][badge_build]][link_build]
 [![License][badge_license]][link_license]
 
 > Easy data transfer from one database to another
@@ -30,11 +31,21 @@ Or manually update `require-dev` block of `composer.json` and run `composer upda
 
 ## Compatibility
 
-| Service | Versions |
-|:---|:---|
-| PHP | ^8.0 |
-| Laravel | ^8.0, ^9.0 |
+| Service   | Versions                           |
+|:----------|:-----------------------------------|
+| PHP       | ^8.0                               |
+| Laravel   | ^8.0, ^9.0, ^10.0, ^11.0, ^12.0, ^13.0    |
 | Databases | MySQL 5.7+, PostgreSQL 9.5+, MSSQL |
+
+| Laravel \ PostgreSQL | 9  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 |
+|:---------------------|----|----|----|----|----|----|----|----|----|----|
+| 8                    | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  |
+| 9                    | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  |
+| 10                   | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  |
+| 11                   | ✖️ | ✖️ | ✖️ | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  |
+| 12                   | ✖️ | ✖️ | ✖️ | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  |
+| 13                   | ✖️ | ✖️ | ✖️ | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  | ✅  |
+
 
 ## Usage
 
@@ -46,16 +57,16 @@ parameters:
 php artisan db:migrate --schema-from=foo --schema-to=bar
 ```
 
-### Only Specific Tables
+### For Certain Tables
 
 ```bash
-php artisan db:migrate --schema-from=foo --schema-to=bar --tables=table1 --tables=table2 --tables=table3
+php artisan db:migrate --schema-from=foo --schema-to=bar --tables=table1 --tables=table2
 ```
 
-### Exclude Specific Tables
+### Exclude Certain Tables
 
 ```bash
-php artisan db:migrate --schema-from=foo --schema-to=bar --exclude=table1 --exclude=table2 --exclude=table3
+php artisan db:migrate --schema-from=foo --schema-to=bar --exclude=table1 --exclude=table2
 ```
 
 where:
@@ -73,15 +84,11 @@ Enjoy 😊
 This package is licensed under the [MIT License](LICENSE).
 
 
-[badge_build]:          https://img.shields.io/github/workflow/status/TheDragonCode/migrate-db/phpunit?style=flat-square
-
 [badge_downloads]:      https://img.shields.io/packagist/dt/dragon-code/migrate-db.svg?style=flat-square
 
 [badge_license]:        https://img.shields.io/packagist/l/dragon-code/migrate-db.svg?style=flat-square
 
 [badge_stable]:         https://img.shields.io/github/v/release/TheDragonCode/migrate-db?label=stable&style=flat-square
-
-[badge_unstable]:       https://img.shields.io/badge/unstable-dev--main-orange?style=flat-square
 
 [link_build]:           https://github.com/TheDragonCode/migrate-db/actions
 

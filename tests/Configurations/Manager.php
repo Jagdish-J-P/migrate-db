@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Configurations;
 
 use DragonCode\MigrateDB\Constants\Drivers;
@@ -23,9 +25,7 @@ class Manager
     }
 
     /**
-     * @param string|\Tests\Configurations\BaseConfiguration $instance
-     *
-     * @return \Tests\Configurations\BaseConfiguration
+     * @param  string|BaseConfiguration  $instance
      */
     protected function resolve(string $instance): BaseConfiguration
     {

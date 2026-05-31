@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Concerns;
 
 use DragonCode\MigrateDB\Constants\Drivers;
+use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Support\Facades\Config;
 use Tests\Configurations\BaseConfiguration;
 use Tests\Configurations\Manager;
@@ -13,25 +16,30 @@ use Tests\Connectors\SqlServerConnection;
 /** @mixin \Tests\Concerns\Connections */
 trait Database
 {
+    use HasUuidAndUlid;
     use Seeders;
 
-    protected $connectors = [
+    protected array $connectors = [
         Drivers::MYSQL      => MySqlConnection::class,
         Drivers::POSTGRES   => PostgresConnection::class,
         Drivers::SQL_SERVER => SqlServerConnection::class,
     ];
 
-    protected $table_foo = 'foo';
+    protected string $table_foo = 'foo';
 
-    protected $table_bar = 'bar';
+    protected string $table_bar = 'bar';
 
-    protected $table_baz = 'baz';
+    protected string $table_baz = 'baz';
 
-    protected $choice_target = 'target';
+    protected string $table_ulid = 'ulid_table';
 
-    protected $choice_source = 'source';
+    protected string $table_uuid = 'uuid_table';
 
-    protected $choices = [
+    protected string $choice_target = 'target';
+
+    protected string $choice_source = 'source';
+
+    protected array $choices = [
         'target',
         'source',
         'none',
@@ -71,8 +79,6 @@ trait Database
     }
 
     /**
-     * @param string $connection
-     *
      * @return string|\Tests\Connectors\BaseConnection
      */
     protected function getDatabaseConnector(string $connection): string
@@ -93,5 +99,16 @@ trait Database
     protected function runMigrations(): void
     {
         $this->artisan('migrate', ['--database' => $this->source_connection])->run();
+    }
+
+    protected function getTables(SchemaBuilder $builder): array
+    {
+        $schema = method_exists($builder, 'getCurrentSchemaName')
+            ? $builder->getCurrentSchemaName()
+            : null;
+
+        return method_exists($builder, 'getAllTables')
+            ? $builder->getAllTables()
+            : $builder->getTables($schema);
     }
 }

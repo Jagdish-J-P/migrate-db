@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Connectors;
 
 use DragonCode\Support\Concerns\Makeable;
@@ -13,7 +15,7 @@ abstract class BaseConnection
 {
     use Makeable;
 
-    /** @var \Tests\Configurations\BaseConfiguration */
+    /** @var BaseConfiguration */
     protected $configuration;
 
     protected $default_database;

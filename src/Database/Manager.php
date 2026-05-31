@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DragonCode\MigrateDB\Database;
 
 use DragonCode\Contracts\MigrateDB\Builder as BuilderContract;
@@ -36,7 +38,7 @@ class Manager
     }
 
     /**
-     * @return \DragonCode\MigrateDB\Database\Builder|string
+     * @return Builder|string
      */
     protected function getBuilder(): string
     {
